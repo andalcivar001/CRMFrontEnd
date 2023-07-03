@@ -1,13 +1,15 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import clienteAxios from "../../config/axios";
 import {
   mostrarAlertaExito,
   mostrarAlertaError,
 } from "../../services/SweetAlertService";
 import { useNavigate, useParams } from "react-router-dom";
+import { CRMContext } from "../../context/CRMContext";
 
 const EditarCliente = () => {
   const { idCliente } = useParams(); // para obtener los parametros de la url
+  const [auth, guardarAuth] = useContext(CRMContext);
 
   const navigate = useNavigate();
 
@@ -23,7 +25,11 @@ const EditarCliente = () => {
   const [fechaFormateada, setFechaFormateada] = useState("");
 
   const obtenerCliente = async () => {
-    const cliente = await clienteAxios.get(`/clientes/${idCliente}`);
+    const cliente = await clienteAxios.get(`/clientes/${idCliente}`, {
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+      },
+    });
     if (!cliente.data) {
       mostrarAlertaError("No se pudo obtener los datos del cliente");
       return;

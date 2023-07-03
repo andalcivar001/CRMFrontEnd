@@ -22,7 +22,6 @@ const NuevoCliente = () => {
 
   const actualizarState = (e) => {
     guardarCliente({ ...cliente, [e.target.name]: e.target.value });
-    console.log(cliente);
   };
 
   useEffect(() => {
@@ -40,14 +39,24 @@ const NuevoCliente = () => {
   const agregarCliente = (e) => {
     e.preventDefault();
 
-    clienteAxios.post("/clientes", cliente).then((res) => {
-      if (res.data.status === 200) {
-        mostrarAlertaExito(res.data.mensaje);
-        navigate("/");
-      } else {
-        mostrarAlertaError(res.data.mensaje);
-      }
-    });
+    clienteAxios
+      .post(
+        "/clientes",
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        },
+        cliente
+      )
+      .then((res) => {
+        if (res.data.status === 200) {
+          mostrarAlertaExito(res.data.mensaje);
+          navigate("/");
+        } else {
+          mostrarAlertaError(res.data.mensaje);
+        }
+      });
   };
   if (!auth.auth && auth.token === localStorage.getItem("token")) {
     navigate("/login");

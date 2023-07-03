@@ -1,12 +1,16 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import clienteAxios from "../../config/axios";
 import {
   mostrarAlertaExito,
   mostrarAlertaError,
 } from "../../services/SweetAlertService";
 import { useNavigate } from "react-router-dom";
+import { CRMContext } from "../../context/CRMContext";
+
 const NuevoProducto = () => {
   const navigate = useNavigate();
+  const [auth, guardarAuth] = useContext(CRMContext);
+
   const [producto, guardarProducto] = useState({
     nombre: "",
     precio: "",
@@ -32,11 +36,20 @@ const NuevoProducto = () => {
     formData.append("precio", producto.precio);
     formData.append("imagen", archivo);
     try {
-      const res = await clienteAxios.post("/productos", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const res = await clienteAxios.post(
+        "/productos",
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
         },
-      });
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       if (res.status === 200) {
         mostrarAlertaExito(res.data.mensaje);
         navigate("/productos");

@@ -17,6 +17,7 @@ const CRMProvider = (props) => {
       });
     }
   }
+  console.log(auth.token);
 
   return (
     <CRMContext.Provider value={[auth, guardarAuth]}>

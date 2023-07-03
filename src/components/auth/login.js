@@ -59,7 +59,7 @@ const Login = () => {
           <div className="campo">
             <label>Password</label>
             <input
-              type="text"
+              type="password"
               name="password"
               placeholder="Ingrese password"
               required
@@ -72,6 +72,7 @@ const Login = () => {
             className="btn btn-verde btn-block"
           />
         </form>
+        <p>Acceso email:correo@correo.com pwd:123456</p>
       </div>
     </div>
   );

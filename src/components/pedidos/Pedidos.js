@@ -1,11 +1,18 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, useContext } from "react";
 import clienteAxios from "../../config/axios";
 import Detallespedidos from "./DetallesPedido";
+import { CRMContext } from "../../context/CRMContext";
+
 const Pedidos = () => {
+  const [auth, guardarAuth] = useContext(CRMContext);
   const [pedidos, guardarPedidos] = useState([]);
 
   const consultarApi = async () => {
-    const res = await clienteAxios.get(`/pedidos`);
+    const res = await clienteAxios.get(`/pedidos`, {
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+      },
+    });
     guardarPedidos(res.data);
     console.log(res.data);
   };

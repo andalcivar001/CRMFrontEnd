@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import clienteAxios from "../../config/axios";
 import {
@@ -6,18 +6,26 @@ import {
   mostrarAlertaError,
   mostrarAlertaConfirmacion,
 } from "../../services/SweetAlertService";
+import { CRMContext } from "../../context/CRMContext";
+
 const Producto = ({ producto }) => {
   const { _id, nombre, precio, imagen } = producto;
-
+  const [auth, guardarAuth] = useContext(CRMContext);
   const eliminarProducto = (idProducto) => {
     mostrarAlertaConfirmacion("¿Estás seguro que deseas eliminar?", () => {
-      clienteAxios.delete(`/productos/${idProducto}`).then((res) => {
-        if (res.status === 200) {
-          mostrarAlertaExito("Producto eliminado OK");
-        } else {
-          mostrarAlertaError(res.data.mensaje);
-        }
-      });
+      clienteAxios
+        .delete(`/productos/${idProducto}`, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            mostrarAlertaExito("Producto eliminado OK");
+          } else {
+            mostrarAlertaError(res.data.mensaje);
+          }
+        });
     });
   };
   return (

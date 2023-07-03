@@ -1,9 +1,7 @@
 import React from "react";
 
 const Detallespedidos = (props) => {
-  console.log(props);
   const { pedido } = props;
-  console.log(pedido.cliente.nombre);
   return (
     <li className="pedido">
       <div className="info-pedido">

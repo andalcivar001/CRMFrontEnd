@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   mostrarAlertaExito,
@@ -6,16 +6,21 @@ import {
   mostrarAlertaConfirmacion,
 } from "../../services/SweetAlertService";
 import clienteAxios from "../../config/axios";
+import { CRMContext } from "../../context/CRMContext";
 
 const Cliente = ({ cliente }) => {
   const { _id, nombre, telefono, tipoIdent, identificacion, email } = cliente;
-
+  const [auth, guardarAuth] = useContext(CRMContext);
   const eliminarCliente = (idCliente) => {
     mostrarAlertaConfirmacion(
       "¿Estás seguro que deseas cancelar?",
       async () => {
         try {
-          const response = await clienteAxios.delete(`/clientes/${idCliente}`);
+          const response = await clienteAxios.delete(`/clientes/${idCliente}`, {
+            headers: {
+              Authorization: `Bearer ${auth.token}`,
+            },
+          });
           if (response.status === 200) {
             mostrarAlertaExito("Cliente eliminado OK");
           } else {

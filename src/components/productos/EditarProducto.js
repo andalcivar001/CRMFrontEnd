@@ -1,13 +1,15 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import clienteAxios from "../../config/axios";
 import {
   mostrarAlertaExito,
   mostrarAlertaError,
 } from "../../services/SweetAlertService";
 import { useNavigate, useParams } from "react-router-dom";
+import { CRMContext } from "../../context/CRMContext";
 
 const EditarProducto = () => {
   const { idProducto } = useParams(); // para obtener los parametros de la url
+  const [auth, guardarAuth] = useContext(CRMContext);
   const navigate = useNavigate();
   const [producto, guardarProducto] = useState({
     nombre: "",
@@ -21,7 +23,14 @@ const EditarProducto = () => {
   const { nombre, precio, imagen } = producto;
 
   const obtenerProducto = async () => {
-    const productoConsulta = await clienteAxios.get(`/productos/${idProducto}`);
+    const productoConsulta = await clienteAxios.get(
+      `/productos/${idProducto}`,
+      {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      }
+    );
     guardarProducto(productoConsulta.data);
   };
   const actualizarSteteProducto = (e) => {
