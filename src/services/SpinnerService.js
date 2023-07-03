@@ -20,7 +20,6 @@ const SpinnerService = () => {
   }, []);
 
   const showSpinner = () => {
-    console.log("entro spinner");
     setIsLoading(true);
   };
 
