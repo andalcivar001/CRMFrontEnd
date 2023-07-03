@@ -36,14 +36,18 @@ const NuevoPedido = () => {
   useEffect(() => {
     obtenerCliente();
     actualizarTotal();
-    console.log(productos);
   }, [productos]);
 
   const buscarProducto = async (e) => {
     e.preventDefault();
     try {
       const resultado = await clienteAxios.get(
-        `/productos/busqueda/${busqueda}`
+        `/productos/busqueda/${busqueda}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
       );
       if (resultado.data && resultado.data.length) {
         let productosExiste = [...productos];
@@ -109,7 +113,11 @@ const NuevoPedido = () => {
       total: total,
     };
     try {
-      const res = await clienteAxios.post(`/pedidos`, pedido);
+      const res = await clienteAxios.post(`/pedidos`, pedido, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
       if (res.status === 200) {
         mostrarAlertaExito(res.data.mensaje);
         navigate("/");

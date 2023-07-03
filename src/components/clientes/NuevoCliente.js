@@ -38,16 +38,16 @@ const NuevoCliente = () => {
 
   const agregarCliente = (e) => {
     e.preventDefault();
-
     clienteAxios
       .post(
         "/clientes",
+
+        cliente,
         {
           headers: {
             Authorization: `Bearer ${auth.token}`,
           },
-        },
-        cliente
+        }
       )
       .then((res) => {
         if (res.data.status === 200) {

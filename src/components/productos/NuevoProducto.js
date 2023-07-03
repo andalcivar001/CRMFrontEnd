@@ -38,11 +38,7 @@ const NuevoProducto = () => {
     try {
       const res = await clienteAxios.post(
         "/productos",
-        {
-          headers: {
-            Authorization: `Bearer ${auth.token}`,
-          },
-        },
+
         formData,
         {
           headers: {
@@ -56,7 +52,6 @@ const NuevoProducto = () => {
       } else {
         mostrarAlertaError(res.data.mensaje);
       }
-      console.log(res);
     } catch (error) {
       console.log(error);
       mostrarAlertaError("hubo un error al guardar");

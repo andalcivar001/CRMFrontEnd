@@ -47,6 +47,7 @@ const EditarProducto = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    console.log(auth.token);
     const formData = new FormData();
     formData.append("nombre", producto.nombre);
     formData.append("precio", producto.precio);
@@ -63,7 +64,6 @@ const EditarProducto = () => {
       } else {
         mostrarAlertaError(res.data.mensaje);
       }
-      console.log(res);
     } catch (error) {
       console.log(error);
       mostrarAlertaError("hubo un error al guardar");

@@ -42,7 +42,6 @@ const EditarCliente = () => {
 
   const actualizarState = (e) => {
     datosCliente({ ...cliente, [e.target.name]: e.target.value });
-    console.log([e.target.name] + ": " + e.target.value);
   };
 
   useEffect(() => {
@@ -63,14 +62,20 @@ const EditarCliente = () => {
   const actualizarCliente = (e) => {
     e.preventDefault();
 
-    clienteAxios.put(`/clientes/${idCliente}`, cliente).then((res) => {
-      if (res.status === 200) {
-        mostrarAlertaExito("Cliente actulizado OK");
-        navigate("/");
-      } else {
-        mostrarAlertaError(res.data.mensaje);
-      }
-    });
+    clienteAxios
+      .put(`/clientes/${idCliente}`, cliente, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          mostrarAlertaExito("Cliente actulizado OK");
+          navigate("/");
+        } else {
+          mostrarAlertaError(res.data.mensaje);
+        }
+      });
   };
   return (
     <Fragment>

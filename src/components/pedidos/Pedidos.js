@@ -14,12 +14,11 @@ const Pedidos = () => {
       },
     });
     guardarPedidos(res.data);
-    console.log(res.data);
   };
 
   useEffect(() => {
     consultarApi();
-  }, []);
+  }, [pedidos]);
   return (
     <Fragment>
       <h2>Pedidos</h2>
